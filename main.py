@@ -5,7 +5,12 @@ from job_maintain_service import job_maintain_service
 from pydantic import BaseModel
 from typing import List, Dict
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 import httpx
+import os
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI()
 
@@ -21,9 +26,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# DeepSeek API Configuration
-DEEPSEEK_API_KEY = "sk-13da774776964dca89353f8cff5cd26a"
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
+# DeepSeek API Configuration (loaded from .env)
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_API_URL = os.getenv("DEEPSEEK_API_URL", "https://api.deepseek.com/v1/chat/completions")
+
+# Validate API key is configured
+if not DEEPSEEK_API_KEY:
+    raise ValueError(
+        "DEEPSEEK_API_KEY not found in environment variables. "
+        "Please create a .env file with your API key. "
+        "See .env.example for reference."
+    )
 
 
 # Pydantic Models
