@@ -78,6 +78,6 @@ def inference_service():
     risk_result = joined_risk_data.to_dict(orient='records')
 
     return {
-        "tamping": tamping_result,
-        "risk": risk_result
+        "tampings": tamping_result,
+        "risks": risk_result
     }
